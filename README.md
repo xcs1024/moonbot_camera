@@ -66,13 +66,13 @@ data/Insta/logs/media_sdk.log
 在仓库根目录运行，保证 `libs/MediaSDK/models` 这个相对路径存在：
 
 ```powershell
-.\build\camera\Release\insta360_ai_stitch_preview.exe --seconds 30 --output-size 1920x960
+.\build\camera_msvc\Release\insta360_ai_stitch_preview.exe --seconds 30 --output-size 960x480 --preview
 ```
 
 无窗口预览，只保存数据到 `data/Insta`：
 
 ```powershell
-.\build\camera\Release\insta360_ai_stitch_preview.exe --seconds 30 --no-preview
+.\build\camera_msvc\Release\insta360_ai_stitch_preview.exe --seconds 30 --output-size 960x480
 ```
 
 参数:
