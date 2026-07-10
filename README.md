@@ -205,6 +205,12 @@ Get-ChildItem .\build\camera_msvc\Release\*140*.dll
 
 ## 远端 DAP 环境
 
+### 注意
+
+```text
+将tcp_jpeg_receiver.py 已发在third_party下，即在远端配置好DAP环境后，将其放在根目录下就可以进行使用
+```
+
 远端机器：
 
 ```text
