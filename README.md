@@ -38,7 +38,7 @@ libs
 1. 使用Zadig安装驱动
 ![Zadig安装图](./docs/zadig.png)
 
-2. Insta x4 air SDK 使用
+2. Insta X5 SDK 使用
 
 实现路径：
 
