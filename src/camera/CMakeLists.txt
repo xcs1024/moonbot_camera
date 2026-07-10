@@ -48,6 +48,14 @@ target_link_libraries(
     ${OpenCV_LIBS}
 )
 
+if(WIN32)
+    target_link_libraries(
+        insta360_ai_stitch_preview
+        PRIVATE
+        Ws2_32
+    )
+endif()
+
 if(MSVC)
     target_compile_options(
         insta360_ai_stitch_preview
