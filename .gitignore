@@ -1,5 +1,4 @@
-libs/CameraSDK
-libs/MediaSDK
+libs/
 .agents/
 build/
 data/

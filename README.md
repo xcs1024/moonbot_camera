@@ -3,6 +3,8 @@
 ## 必要条件
 
 libs中导入Windows_CameraSDK-2.1.1_MediaSDK-3.1.3.zip并重新命名
+下载https://github.com/opencv/opencv/releases/download/4.13.0/opencv-4.13.0-windows.exe
+保存到libs里面
 
 ```bash
 C:.
@@ -26,6 +28,7 @@ libs
     └─models
         ├─cameraaccessory
         └─coolingshell
+└─opencv
 ```
 
 ## 环境配置
@@ -55,8 +58,7 @@ data/Insta/logs/media_sdk.log
 构建:
 
 ```powershell
-cmake -S src/camera -B build/camera -A x64 -DOpenCV_DIR=你的OpenCVConfig.cmake目录
-cmake --build build/camera --config Release
+.\scripts\build_camera_msvc.cmd
 ```
 
 运行:
