@@ -25,10 +25,9 @@ OpenCV 预览窗口
 ```text
 MediaSDK RGBA 全景帧
   -- OpenCV 转 BGR + JPEG 编码 -->
-TCP 172.16.23.253:5001
-  -- Python DAP 接收端 -->
-/home/nvidia/DAP/data/rgb/latest.jpg
-/home/nvidia/DAP/data/point/latest.pcd
+TCP 172.16.23.253:5002
+  -- Isaac Sim 动态纹理接收端 -->
+/home/nvidia/insta360_live_panorama
 ```
 
 ## 目录结构
@@ -119,14 +118,14 @@ ins_camera::CameraType::Insta360X5
 当前预览流参数：
 
 ```text
-CameraSDK live stream: RES_1920_960P30
-MediaSDK output:      960 x 480 RGBA
+CameraSDK live stream: RES_3840_1920P30
+MediaSDK output:      3840 x 1920 RGBA
 Stitch type:          DYNAMICSTITCH
 FlowState:            enabled
 Audio:                disabled
-TCP target:           172.16.23.253:5001
-JPEG quality:         85
-TCP send FPS:         5
+TCP target:           172.16.23.253:5002
+JPEG quality:         90
+TCP send FPS:         15
 ```
 
 当前代码按官方顺序启动：

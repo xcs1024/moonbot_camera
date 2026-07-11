@@ -28,14 +28,14 @@
 namespace {
 
 constexpr auto kPreviewResolution =
-    ins_camera::VideoResolution::RES_1920_960P30;
-constexpr int kOutputWidth = 960;
-constexpr int kOutputHeight = 480;
+    ins_camera::VideoResolution::RES_3840_1920P30;
+constexpr int kOutputWidth = 3840;
+constexpr int kOutputHeight = 1920;
 constexpr const char* kWindowName = "Insta360 X5 Preview";
 constexpr const char* kTcpHost = "172.16.23.253";
-constexpr uint16_t kTcpPort = 5001;
-constexpr int kJpegQuality = 85;
-constexpr int kTcpSendFps = 5;
+constexpr uint16_t kTcpPort = 5002;
+constexpr int kJpegQuality = 90;
+constexpr int kTcpSendFps = 15;
 
 uint64_t NowMicros() {
     const auto now = std::chrono::system_clock::now().time_since_epoch();
@@ -266,6 +266,7 @@ int main() {
 
     // 相机已打开后再初始化 MediaSDK，避免拼接环境影响 CameraSDK 枚举/同步。
     ins::InitEnv();
+    ins::SetLogLevel(ins::InsLogLevel::ERR);
 
     auto stitcher = std::make_shared<ins::RealTimeStitcher>();
 
@@ -443,7 +444,8 @@ int main() {
     stream_param.video_resolution = kPreviewResolution;
     stream_param.lrv_video_resulution =
         kPreviewResolution;
-    stream_param.video_bitrate = 1024 * 1024 / 2;
+    // 4K 实时全景需要足够码率，否则拼接前的视频细节会被压缩破坏。
+    stream_param.video_bitrate = 20 * 1024 * 1024;
     stream_param.enable_audio = false;
     stream_param.using_lrv = false;
 
