@@ -207,11 +207,20 @@ int main() {
     SetConsoleCP(CP_UTF8);
 #endif
 
-    // MediaSDK 要求在主程序开始时初始化。
-    ins::InitEnv();
+    ins_camera::SetLogLevel(ins_camera::LogLevel::ERR);
 
     ins_camera::DeviceDiscovery discovery;
-    auto devices = discovery.GetAvailableDevices();
+    std::vector<ins_camera::DeviceDescriptor> devices;
+    for (int attempt = 1; attempt <= 3; ++attempt) {
+        devices = discovery.GetAvailableDevices();
+        if (!devices.empty()) {
+            break;
+        }
+
+        std::cerr << "未发现相机，重试 " << attempt << "/3...\n";
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
     if (devices.empty()) {
         std::cerr << "未发现相机，请检查 USB 安卓模式和 libusbK 驱动。\n";
         discovery.FreeDeviceDescriptors(devices);
@@ -254,6 +263,9 @@ int main() {
         discovery.FreeDeviceDescriptors(devices);
         return 1;
     }
+
+    // 相机已打开后再初始化 MediaSDK，避免拼接环境影响 CameraSDK 枚举/同步。
+    ins::InitEnv();
 
     auto stitcher = std::make_shared<ins::RealTimeStitcher>();
 

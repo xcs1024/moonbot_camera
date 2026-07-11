@@ -26,8 +26,9 @@ OpenCV 预览窗口
 MediaSDK RGBA 全景帧
   -- OpenCV 转 BGR + JPEG 编码 -->
 TCP 172.16.23.253:5001
-  -- Python 接收端 -->
-/tmp/dap_tcp/latest.jpg
+  -- Python DAP 接收端 -->
+/home/nvidia/DAP/data/rgb/latest.jpg
+/home/nvidia/DAP/data/point/latest.pcd
 ```
 
 ## 目录结构
@@ -208,7 +209,7 @@ Get-ChildItem .\build\camera_msvc\Release\*140*.dll
 ### 注意
 
 ```text
-将tcp_jpeg_receiver.py 已发在third_party下，即在远端配置好DAP环境后，将其放在根目录下就可以进行使用
+将所需代码已发在third_party/DAP下，即在远端配置好DAP环境后，将其放在根目录下就可以进行使用
 ```
 
 远端机器：
@@ -272,7 +273,7 @@ python test/infer.py \
 远端接收脚本：
 
 ```text
-/home/nvidia/DAP/tcp_jpeg_receiver.py
+/home/nvidia/DAP/tcp_dap_point_receiver.py
 ```
 
 后台服务启动方式：
@@ -280,25 +281,59 @@ python test/infer.py \
 ```bash
 conda activate dap
 cd ~/DAP
-nohup python ~/DAP/tcp_jpeg_receiver.py \
+nohup python ~/DAP/tcp_dap_point_receiver.py \
   --host 0.0.0.0 \
   --port 5001 \
-  --save-dir /tmp/dap_tcp \
+  --rgb-dir /home/nvidia/DAP/data/rgb \
+  --depth-dir /home/nvidia/DAP/data/depth \
+  --point-dir /home/nvidia/DAP/data/point \
   > /tmp/dap_tcp_receiver.log 2>&1 &
+```
+
+或者直接使用脚本
+
+```text
+bash start_dap_receiver.sh
 ```
 
 检查接收端：
 
 ```bash
-pgrep -af tcp_jpeg_receiver.py
+pgrep -af tcp_dap_point_receiver.py
 ss -ltnp | grep ':5001'
 tail -f /tmp/dap_tcp_receiver.log
 ```
 
-接收到的最新 JPEG：
+停止接收端：
+
+```bash
+pkill -f tcp_dap_point_receiver.py
+```
+
+如果端口仍被占用，再确认并强制停止：
+
+```bash
+ss -ltnp | grep ':5001'
+pkill -9 -f tcp_dap_point_receiver.py
+```
+
+当前输出：
 
 ```text
-/tmp/dap_tcp/latest.jpg
+/home/nvidia/DAP/data/rgb/latest.jpg
+/home/nvidia/DAP/data/depth/latest.npy
+/home/nvidia/DAP/data/point/latest.pcd
+```
+
+接收端每次启动会清空旧输出，历史帧从 `00000001` 重新递增；`latest.*` 始终覆盖为最近处理完成的一帧：
+
+```text
+/home/nvidia/DAP/data/rgb/00000001.jpg
+/home/nvidia/DAP/data/depth/00000001.npy
+/home/nvidia/DAP/data/point/00000001.pcd
+/home/nvidia/DAP/data/rgb/latest.jpg
+/home/nvidia/DAP/data/depth/latest.npy
+/home/nvidia/DAP/data/point/latest.pcd
 ```
 
 ## TCP 方案
