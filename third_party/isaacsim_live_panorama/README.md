@@ -39,4 +39,5 @@ builtins._insta360_live_panorama.stop()
 - TCP 端口：`5002`
 - 动态纹理：`dynamic://insta360_live_panorama`
 - 球体半径：`100 m`
+- 内视球水平纠正：`FLIP_HORIZONTAL = True`
 - 输入：JPEG 编码的 2:1 ERP 图像

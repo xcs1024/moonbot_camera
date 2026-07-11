@@ -33,6 +33,7 @@ TEXTURE_NAME = "insta360_live_panorama"
 SPHERE_RADIUS = 100.0
 SPHERE_SEGMENTS = 128
 SPHERE_RINGS = 64
+FLIP_HORIZONTAL = True
 
 
 def log(message: str) -> None:
@@ -75,8 +76,9 @@ def create_panorama_sphere(stage) -> None:
                     SPHERE_RADIUS * cos_phi,
                 )
             )
-            # OpenCV 图像原点在左上，USD UV 的 V 方向需要翻转。
-            texcoords.append(Gf.Vec2f(u, 1.0 - v))
+            # 从球体内部观察会产生水平镜像；直接翻转 UV，避免逐帧复制 4K 图像。
+            texture_u = 1.0 - u if FLIP_HORIZONTAL else u
+            texcoords.append(Gf.Vec2f(texture_u, 1.0 - v))
 
     counts = []
     indices = []

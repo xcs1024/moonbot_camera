@@ -206,6 +206,7 @@ TCP connected to 172.16.23.253:5002.
 | 远端地址 | 172.16.23.253:5002 |
 | Isaac 动态纹理 | `dynamic://insta360_live_panorama` |
 | 全景球半径 | 100 m |
+| 内视球水平纠正 | `FLIP_HORIZONTAL = True` |
 | 碰撞 | 无 |
 
 ## TCP 帧协议
